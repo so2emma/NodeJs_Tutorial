@@ -1,26 +1,27 @@
 const path = require('path');
 
 const express = require('express');
-const port = 3000;
+const port = 8080;
 
 const app = express(); 
 
-// this is for importing routes from the admin router page.
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
+const feedRoutes = require('./routes/feed');
 
-// This is for accepting json requests
-app.use(express.json());
+app.use(express.json()); // this is for application json
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.join(__dirname, "public")))
-
-app.use('/admin', adminRoutes);
-app.use('/shop', shopRoutes);
-
-app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, "views", "404.html"))
+app.use((req, res, next)=> {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
 })
+
+
+
+app.use('/feed', feedRoutes);
+
+
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`)
