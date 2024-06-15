@@ -16,4 +16,11 @@ router.post('/post', [
 
 // Getting a single post
 router.get('/post/:postId', feedController.getPost);
+
+// this is for updating post
+router.put('/post/:postId', [
+    body('title').trim().isLength({min: 5}),
+    body('content').trim().isLength({min: 5})
+], feedController.updatePost);
+
 module.exports = router;
