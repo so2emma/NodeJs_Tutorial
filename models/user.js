@@ -18,10 +18,10 @@ const userSchema = new Schema({
         type: String,
         default: 'i am new'
     },
-    posts: {
+    posts: [{
         type: Schema.Types.ObjectId,
         ref: 'Post'
-    }
+    }]
 });
 
 module.exports = mongoose.model('user', userSchema);

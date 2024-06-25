@@ -10,6 +10,7 @@ exports.getPosts = (req, res, next) => {
   const currentPage = req.query.page || 1;
   const perPage = 2;
   let totalItems;
+
   Post.find()
     .countDocuments()
     .then((count) => {
@@ -80,13 +81,12 @@ exports.createPosts = (req, res, next) => {
       creator = user;
       user.posts.push(post);
       return user.save();
-      
     })
     .then(result => {
       res.status(201).json({
         message: "Post created successfully!",
         post: post,
-        creator: {_id: creator._id, name: creator_name}
+        creator: {_id: creator._id, name: creator.name}
       });
     })
     .catch((err) => {
@@ -142,6 +142,7 @@ exports.updatePost = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
+
       if (imageUrl !== post.imageUrl) {
         clearImage(post.imageUrl);
       }
